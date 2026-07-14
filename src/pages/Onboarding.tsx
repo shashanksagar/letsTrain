@@ -25,16 +25,22 @@ export function Onboarding() {
   const [profile, setProfile] = useState(defaults)
   const [saving, setSaving] = useState(false)
 
-  function update(field: string, value: unknown) {
-    setProfile(prev => ({ ...prev, [field]: value }))
+  function update(field: keyof typeof defaults, value: unknown) {
+    setProfile(prev => ({ ...prev, [field]: value as never }))
   }
 
   async function handleSubmit() {
     setSaving(true)
-    const now = new Date()
-    await seedExercises()
-    await db.userProfile.add({ ...profile, onboardingComplete: true, createdAt: now, updatedAt: now })
-    navigate('/home')
+    try {
+      const now = new Date()
+      await seedExercises()
+      await db.userProfile.add({ ...profile, onboardingComplete: true, createdAt: now, updatedAt: now })
+      navigate('/home')
+    } catch (err) {
+      console.error('Onboarding save failed', err)
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
