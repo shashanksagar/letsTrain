@@ -8,6 +8,7 @@ import { LogBody } from './pages/LogBody'
 import { LogFood } from './pages/LogFood'
 import { BottomNav } from './components/ui/BottomNav'
 import { Settings } from './pages/Settings'
+import { Library } from './pages/Library'
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/log-body" element={<LogBody />} />
           <Route path="/log-food" element={<LogFood />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/library" element={<Library />} />
           <Route path="*" element={<Navigate to="/onboarding" replace />} />
         </Routes>
       </div>
