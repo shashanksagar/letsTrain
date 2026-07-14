@@ -5,7 +5,8 @@ const TABS = [
   { path: '/home',     icon: '🏠', label: 'Home' },
   { path: '/program',  icon: '📋', label: 'Program' },
   { path: '/progress', icon: '📈', label: 'Progress' },
-  { path: '/log-body', icon: '⚖️',  label: 'Body' },
+  { path: '/log-food', icon: '🥗', label: 'Food' },
+  { path: '/settings', icon: '⚙️',  label: 'Settings' },
 ]
 
 export function BottomNav() {
