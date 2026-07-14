@@ -5,6 +5,7 @@ import { MyProgram } from './pages/MyProgram'
 import { WorkoutLogger } from './pages/WorkoutLogger'
 import { Progress } from './pages/Progress'
 import { LogBody } from './pages/LogBody'
+import { LogFood } from './pages/LogFood'
 import { BottomNav } from './components/ui/BottomNav'
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="/workout/:programId/:dayIndex" element={<WorkoutLogger />} />
           <Route path="/progress" element={<Progress />} />
           <Route path="/log-body" element={<LogBody />} />
+          <Route path="/log-food" element={<LogFood />} />
           <Route path="*" element={<Navigate to="/onboarding" replace />} />
         </Routes>
       </div>
