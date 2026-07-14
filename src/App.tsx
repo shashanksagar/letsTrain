@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { Onboarding } from './pages/Onboarding'
 import { Home } from './pages/Home'
 import { MyProgram } from './pages/MyProgram'
+import { WorkoutLogger } from './pages/WorkoutLogger'
 
 export default function App() {
   return (
@@ -9,6 +10,7 @@ export default function App() {
       <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/home" element={<Home />} />
       <Route path="/program" element={<MyProgram />} />
+      <Route path="/workout/:programId/:dayIndex" element={<WorkoutLogger />} />
       <Route path="*" element={<Navigate to="/onboarding" replace />} />
     </Routes>
   )
