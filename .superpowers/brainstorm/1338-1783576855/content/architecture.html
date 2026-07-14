@@ -1,0 +1,69 @@
+<h2>letsTrain — App Architecture</h2>
+<p class="subtitle">React PWA + Supabase + Vercel. All free tier. Dark Teal design system.</p>
+
+<div class="section">
+  <h3>Core Modules</h3>
+  <div class="options" style="pointer-events:none;">
+    <div class="option" style="opacity:1;">
+      <div class="letter">1</div>
+      <div class="content">
+        <h3>Onboarding & Fitness Profile</h3>
+        <p>Multi-step wizard: name, age, weight, height, experience level, goal, available equipment, days/week, session length, overload preference. Saved to Supabase user profile.</p>
+      </div>
+    </div>
+    <div class="option" style="opacity:1;">
+      <div class="letter">2</div>
+      <div class="content">
+        <h3>Program Generator</h3>
+        <p>Algorithmic engine that builds a full weekly program from the profile. Targets all muscle groups. Applies periodization (linear for beginners, undulating for intermediate/advanced). Programs: Full Body 3x, Upper/Lower 4x, PPL 5–6x.</p>
+      </div>
+    </div>
+    <div class="option" style="opacity:1;">
+      <div class="letter">3</div>
+      <div class="content">
+        <h3>Workout Logger</h3>
+        <p>Active workout screen: current exercise, sets × reps × weight, rest timer, notes. Logs every set to history. Suggests next weight based on overload mode.</p>
+      </div>
+    </div>
+    <div class="option" style="opacity:1;">
+      <div class="letter">4</div>
+      <div class="content">
+        <h3>Progress Dashboard</h3>
+        <p>Volume over time, strength curves per exercise, bodyweight trend, streak calendar, PRs. Charts using Recharts.</p>
+      </div>
+    </div>
+    <div class="option" style="opacity:1;">
+      <div class="letter">5</div>
+      <div class="content">
+        <h3>Exercise Library</h3>
+        <p>~150 exercises tagged by muscle group, equipment, movement pattern. Filterable. Each exercise has instructions + target muscles diagram.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Tech Stack</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
+    <div style="background:#161b22;border-radius:8px;padding:16px;">
+      <div class="label">Frontend</div>
+      <div style="color:#00d4aa;margin-top:6px;">React 18 + Vite</div>
+      <div style="color:#8b949e;font-size:13px;">TypeScript, TailwindCSS, Recharts, PWA plugin</div>
+    </div>
+    <div style="background:#161b22;border-radius:8px;padding:16px;">
+      <div class="label">Backend</div>
+      <div style="color:#00d4aa;margin-top:6px;">Supabase (free)</div>
+      <div style="color:#8b949e;font-size:13px;">PostgreSQL, Auth, Row-level security, Realtime</div>
+    </div>
+    <div style="background:#161b22;border-radius:8px;padding:16px;">
+      <div class="label">Hosting</div>
+      <div style="color:#00d4aa;margin-top:6px;">Vercel (free)</div>
+      <div style="color:#8b949e;font-size:13px;">PWA, auto-deploy from git, custom domain</div>
+    </div>
+    <div style="background:#161b22;border-radius:8px;padding:16px;">
+      <div class="label">Program Logic</div>
+      <div style="color:#00d4aa;margin-top:6px;">TypeScript engine</div>
+      <div style="color:#8b949e;font-size:13px;">Pure functions, runs client-side, no AI API costs</div>
+    </div>
+  </div>
+</div>
