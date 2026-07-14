@@ -2,11 +2,16 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { db } from '../db/db'
 import { Button } from '../components/ui/Button'
-import type { UserProfile, Program } from '../types'
+import { RecoveryBanner } from '../components/recovery/RecoveryBanner'
+import { analyseRecovery } from '../lib/recoveryEngine'
+import type { UserProfile, Program, WorkoutSession } from '../types'
+import type { RecoverySuggestion } from '../lib/recoveryEngine'
 
 export function Home() {
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [program, setProgram] = useState<Program | null>(null)
+  const [recovery, setRecovery] = useState<RecoverySuggestion | null>(null)
+  const [dismissedRecovery, setDismissedRecovery] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -15,6 +20,9 @@ export function Home() {
       setProfile(p)
     })
     db.programs.orderBy('createdAt').last().then(p => setProgram(p ?? null))
+    db.workoutSessions.toArray().then((sessions: WorkoutSession[]) => {
+      setRecovery(analyseRecovery(sessions))
+    })
   }, [navigate])
 
   if (!profile) return null
@@ -33,6 +41,10 @@ export function Home() {
           </h1>
           <p className="text-white/50 mt-1 text-sm">Ready to train?</p>
         </div>
+
+        {recovery && !dismissedRecovery && (
+          <RecoveryBanner suggestion={recovery} onDismiss={() => setDismissedRecovery(true)} />
+        )}
 
         {todayDay && program?.id ? (
           <div className="bg-surface rounded-xl p-4 border border-teal/20">
@@ -55,6 +67,9 @@ export function Home() {
           </Button>
           <Button variant="secondary" size="md" onClick={() => navigate('/progress')} className="flex-1">
             Progress
+          </Button>
+          <Button variant="secondary" size="md" onClick={() => navigate('/log-food')} className="flex-1">
+            Log Food
           </Button>
         </div>
       </div>
