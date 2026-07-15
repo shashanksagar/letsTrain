@@ -24,6 +24,18 @@ export function Library() {
   const [search, setSearch] = useState('')
   const [muscleFilter, setMuscleFilter] = useState<MuscleGroup | 'all'>('all')
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [gifErrors, setGifErrors] = useState<Set<string>>(new Set())
+  const [gifRetrying, setGifRetrying] = useState<Set<string>>(new Set())
+
+  function handleGifError(exId: string) {
+    setGifErrors(prev => new Set(prev).add(exId))
+  }
+
+  function retryGif(exId: string) {
+    setGifRetrying(prev => new Set(prev).add(exId))
+    setGifErrors(prev => { const s = new Set(prev); s.delete(exId); return s })
+    setTimeout(() => setGifRetrying(prev => { const s = new Set(prev); s.delete(exId); return s }), 100)
+  }
 
   useEffect(() => {
     seedExercises().then(() => db.exerciseLibrary.toArray().then(setExercises))
@@ -68,14 +80,25 @@ export function Library() {
               </button>
               {expanded === ex.exId && (
                 <div className="px-4 pb-3 flex flex-col gap-3">
-                  {ex.gifUrl && (
+                  {ex.gifUrl && !gifErrors.has(ex.exId) && !gifRetrying.has(ex.exId) && (
                     <img
                       src={ex.gifUrl}
                       alt={`${ex.name} demonstration`}
                       className="w-full max-w-xs mx-auto rounded-lg"
                       loading="lazy"
-                      onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
+                      onError={() => handleGifError(ex.exId)}
                     />
+                  )}
+                  {ex.gifUrl && gifErrors.has(ex.exId) && (
+                    <div className="flex flex-col items-center gap-2 py-3">
+                      <p className="text-gray-500 text-xs">GIF failed to load</p>
+                      <button
+                        onClick={() => retryGif(ex.exId)}
+                        className="px-3 py-1.5 bg-[#161b22] border border-white/20 rounded-lg text-xs text-[#00d4aa] hover:border-[#00d4aa] transition-colors"
+                      >
+                        ↻ Retry
+                      </button>
+                    </div>
                   )}
                   {ex.instructions.map((inst, i) => (
                     <p key={i} className="text-gray-400 text-xs">{i + 1}. {inst}</p>
