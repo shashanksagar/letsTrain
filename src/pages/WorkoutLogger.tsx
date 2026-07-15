@@ -5,6 +5,7 @@ import { SetRow } from '../components/logger/SetRow'
 import { RestTimer } from '../components/logger/RestTimer'
 import { OverloadBadge } from '../components/logger/OverloadBadge'
 import { Button } from '../components/ui/Button'
+import { fetchWgerImages, getWgerImageUrl } from '../lib/wgerImages'
 import type { Program, Exercise, ProgramExercise, WorkoutSession } from '../types'
 
 interface CompletedSet { reps: number; weightKg: number; setNumber: number }
@@ -19,8 +20,11 @@ export function WorkoutLogger() {
   const [restActive, setRestActive] = useState(false)
   const [session, setSession] = useState<WorkoutSession | null>(null)
   const [loading, setLoading] = useState(true)
+  const [wgerMap, setWgerMap] = useState<Map<string, string>>(new Map())
+  const [showForm, setShowForm] = useState(false)
 
   useEffect(() => { load() }, [programId])
+  useEffect(() => { fetchWgerImages().then(setWgerMap) }, [])
 
   async function load() {
     const prog = await db.programs.get(Number(programId))
@@ -72,7 +76,9 @@ export function WorkoutLogger() {
 
   const day = program.weeks[0].days[Number(dayIndex)]
   const currentEx = day.exercises[currentExIdx]
-  const exName = exerciseMap.get(currentEx?.exId)?.name ?? currentEx?.exId
+  const exDetail = exerciseMap.get(currentEx?.exId)
+  const exName = exDetail?.name ?? currentEx?.exId
+  const imgUrl = getWgerImageUrl(currentEx?.exId, wgerMap)
   const completedForEx = completedSets[currentEx?.exId] ?? []
   const allSetsForEx = completedForEx.length >= currentEx?.sets
   const overloadMode = program.profileSnapshot.overloadMode
@@ -92,12 +98,42 @@ export function WorkoutLogger() {
           <Button variant="ghost" size="sm" onClick={finishWorkout}>Finish</Button>
         </div>
 
-        <div className="bg-surface rounded-xl p-4 border border-white/10 mb-4">
-          <h2 className="text-white font-bold text-lg mb-1">{exName}</h2>
-          <p className="text-white/50 text-sm mb-3">
-            {currentEx.sets} sets × {currentEx.repMin}–{currentEx.repMax} reps
-          </p>
-          <OverloadBadge suggestionKg={suggestion} mode={overloadMode} />
+        <div className="bg-surface rounded-xl border border-white/10 mb-4 overflow-hidden">
+          {imgUrl && (
+            <img
+              src={imgUrl}
+              alt={`${exName} demonstration`}
+              className="w-full max-h-48 object-cover"
+              loading="lazy"
+            />
+          )}
+          <div className="p-4">
+            <h2 className="text-white font-bold text-lg mb-1">{exName}</h2>
+            <p className="text-white/50 text-sm mb-3">
+              {currentEx.sets} sets × {currentEx.repMin}–{currentEx.repMax} reps
+            </p>
+            <OverloadBadge suggestionKg={suggestion} mode={overloadMode} />
+            {exDetail && (exDetail.instructions.length > 0 || exDetail.tips.length > 0) && (
+              <div className="mt-3">
+                <button
+                  onClick={() => setShowForm(f => !f)}
+                  className="text-[#00d4aa] text-xs font-medium"
+                >
+                  {showForm ? '▲ Hide form guide' : '▼ Show form guide'}
+                </button>
+                {showForm && (
+                  <div className="mt-2 flex flex-col gap-1">
+                    {exDetail.instructions.map((inst, i) => (
+                      <p key={i} className="text-gray-400 text-xs">{i + 1}. {inst}</p>
+                    ))}
+                    {exDetail.tips.map((tip, i) => (
+                      <p key={i} className="text-[#00d4aa] text-xs">💡 {tip}</p>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {restActive && (
@@ -125,7 +161,7 @@ export function WorkoutLogger() {
         {allSetsForEx && !restActive && (
           <div className="flex gap-3">
             {currentExIdx < day.exercises.length - 1 ? (
-              <Button size="lg" onClick={() => setCurrentExIdx(i => i + 1)} className="flex-1">
+              <Button size="lg" onClick={() => { setCurrentExIdx(i => i + 1); setShowForm(false) }} className="flex-1">
                 Next Exercise
               </Button>
             ) : (

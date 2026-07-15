@@ -4,8 +4,8 @@ import { cn } from '../../lib/utils'
 const TABS = [
   { path: '/home',     icon: '🏠', label: 'Home' },
   { path: '/program',  icon: '📋', label: 'Program' },
+  { path: '/library',  icon: '📚', label: 'Library' },
   { path: '/progress', icon: '📈', label: 'Progress' },
-  { path: '/log-food', icon: '🥗', label: 'Food' },
   { path: '/settings', icon: '⚙️',  label: 'Settings' },
 ]
 
