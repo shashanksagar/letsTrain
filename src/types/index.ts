@@ -40,6 +40,7 @@ export interface Exercise {
   movementPattern: MovementPattern
   instructions: string[]
   tips: string[]
+  gifUrl?: string
 }
 
 export interface Program {

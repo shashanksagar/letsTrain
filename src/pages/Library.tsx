@@ -67,7 +67,16 @@ export function Library() {
                 <span className="text-gray-500 text-xs">{expanded === ex.exId ? '▲' : '▼'}</span>
               </button>
               {expanded === ex.exId && (
-                <div className="px-4 pb-3 flex flex-col gap-2">
+                <div className="px-4 pb-3 flex flex-col gap-3">
+                  {ex.gifUrl && (
+                    <img
+                      src={ex.gifUrl}
+                      alt={`${ex.name} demonstration`}
+                      className="w-full max-w-xs mx-auto rounded-lg"
+                      loading="lazy"
+                      onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
+                    />
+                  )}
                   {ex.instructions.map((inst, i) => (
                     <p key={i} className="text-gray-400 text-xs">{i + 1}. {inst}</p>
                   ))}
