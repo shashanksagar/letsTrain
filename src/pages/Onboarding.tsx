@@ -25,7 +25,7 @@ export function Onboarding() {
   const [profile, setProfile] = useState(defaults)
   const [saving, setSaving] = useState(false)
 
-  function update(field: keyof typeof defaults, value: unknown) {
+  function update(field: string, value: unknown) {
     setProfile(prev => ({ ...prev, [field]: value as never }))
   }
 

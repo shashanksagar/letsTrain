@@ -20,6 +20,7 @@ const MOCK_PROGRAM: Omit<Program, 'id'> = {
     name: 'Alex', age: 28, weight: 80, weightUnit: 'kg', height: 180, heightUnit: 'cm',
     experienceLevel: 'intermediate', primaryGoal: 'build_muscle', equipment: ['full_gym'],
     trainingDaysPerWeek: 4, sessionLength: 60, overloadMode: 'automatic', onboardingComplete: true,
+    createdAt: new Date(), updatedAt: new Date(),
   },
   weeks: [{
     weekNumber: 1,

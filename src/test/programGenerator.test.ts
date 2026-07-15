@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { generateProgram } from '../lib/programGenerator'
-import type { UserProfile, Exercise } from '../types'
+import type { UserProfile, Exercise, EquipmentType } from '../types'
 
 const MOCK_EXERCISES: Exercise[] = [
   { id: 1, exId: 'barbell-bench-press', name: 'Barbell Bench Press', muscleGroups: ['chest'], secondaryMuscles: ['triceps', 'shoulders'], equipment: ['full_gym'], movementPattern: 'push', instructions: [], tips: [] },
@@ -61,7 +61,7 @@ describe('generateProgram', () => {
   })
 
   it('only assigns exercises that match equipment', () => {
-    const dbProfile = { ...BASE_PROFILE, equipment: ['dumbbells'] as const }
+    const dbProfile = { ...BASE_PROFILE, equipment: ['dumbbells'] as EquipmentType[] }
     const program = generateProgram(dbProfile, MOCK_EXERCISES)
     for (const day of program.weeks[0].days) {
       for (const pe of day.exercises) {

@@ -19,7 +19,7 @@ export function MacroPieChart({ proteinG, carbsG, fatG }: Props) {
         </Pie>
         <Tooltip
           contentStyle={{ backgroundColor: '#161b22', border: '1px solid #ffffff20', borderRadius: 8 }}
-          formatter={(value: number, name: string) => [`${Math.round(value)} kcal`, name]}
+          formatter={(value) => [`${Math.round(Number(value ?? 0))} kcal`]}
         />
       </PieChart>
     </ResponsiveContainer>

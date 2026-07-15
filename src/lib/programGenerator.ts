@@ -66,7 +66,7 @@ export function generateProgram(
   return {
     version: 1,
     createdAt: new Date(),
-    profileSnapshot: { ...profile, onboardingComplete: true },
+    profileSnapshot: { ...profile, onboardingComplete: true, createdAt: new Date(), updatedAt: new Date() },
     weeks: [{ weekNumber: 1, days }],
   }
 }
